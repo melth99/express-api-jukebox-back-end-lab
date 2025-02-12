@@ -1,17 +1,10 @@
 
-
-app = express()
-TrackModel = require('../models/track')
-router = express.Router()
-
+const express = require('express')
+const TrackModel = require('../models/track')
+const router = express.Router()
 
 
-//create
-
-
-
-
-//read - id & list 
+//index
 router.get('/', async function (req, res) {
     try {
         const trackIndex = await TrackModel.find({})
@@ -21,7 +14,8 @@ router.get('/', async function (req, res) {
         console.log('oh no index functionality didnt work see /index route')
     }
 })
-router.get('/show/:trackId', async function (req, res) {
+//show
+router.get('/:trackId', async function (req, res) {
     try {
         const showTrack = await TrackModel.findById(req.params.trackId)
         res.status(200).json(`${showTrack}track show works`)
@@ -31,32 +25,30 @@ router.get('/show/:trackId', async function (req, res) {
     }
 })
 
-
-//update
-
 //delete
-router.delete('/trackId', async function (req, res) {
+router.delete('/:trackId', async function (req, res) {
     try {
         const deletedTrack = await TrackModel.findByIdAndDelete(req.params.trackId)
-        res.stats(201).json(deletedTrack, 'deletework')
+        res.status(201).json(deletedTrack)
     } catch (err) {
         console.log('deleting work', req.params.trackId)
         res.status(500).json({ err: err.message })
     }
 })
+//update
 router.put('/:trackId', async function (req, res) {
     try {
         const updatedTrack = await TrackModel.findByIdAndUpdate(req.params.trackId, req.body, { new: true })
         console.log(updatedTrack, 'updated track')
         console.log(req.body, 'req.body')
-        res.status(201).json('IT WORK!', updatedTrack)
+        res.status(201).json(updatedTrack)
     } catch (err) {
         console.log('ERROR IN UPDATE put route')
         res.status(500).json({ err: err.message })
     }
 })
-
-router.post('/new', async function (req, res) {
+//create
+router.post('/', async function (req, res) {
     console.log(req)
     try {
         const newTrack = await TrackModel.create(req.body)

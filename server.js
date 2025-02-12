@@ -1,11 +1,11 @@
-express = require('express')
-dotenv = require('dotenv')
+const express = require('express')
+const dotenv = require('dotenv')
 dotenv.config()
-mongoose = require('mongoose')
-app = express()
-morgan = require('morgan')
+const mongoose = require('mongoose')
+const app = express()
+const morgan = require('morgan')
 mongoose.connect(process.env.MONGODB_URI);
-port = '3000'
+const port = '3000'
 mongoose.connection.on('connected',() => {
     console.log(`Connected to MongoDB ${mongoose.connection.name}.`)
 })
@@ -15,7 +15,7 @@ app.use(morgan('dev'))
 
 const trackRouter = require('./controllers/track')
 /////routesa
-app.use('/track',trackRouter)
+app.use('/tracks',trackRouter)
 
 
 
